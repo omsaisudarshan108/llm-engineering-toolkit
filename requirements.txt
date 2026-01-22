@@ -1,0 +1,29 @@
+# LLM Engineering Toolkit - Dependencies
+# Install with: pip install -r requirements.txt
+
+# Core dependencies (required)
+torch>=2.0.0
+transformers>=4.36.0
+numpy>=1.24.0
+tqdm>=4.65.0
+psutil>=5.9.0
+
+# PEFT/LoRA (required for lora/ examples)
+peft>=0.7.0
+accelerate>=0.25.0
+datasets>=2.14.0
+
+# Quantization (optional - requires NVIDIA GPU with CUDA)
+# Uncomment if you have CUDA:
+# bitsandbytes>=0.41.0
+
+# vLLM inference server (optional - requires NVIDIA GPU)
+# Uncomment if you have CUDA:
+# vllm>=0.2.0
+
+# AWQ quantization (optional)
+# autoawq>=0.1.0
+
+# Experiment tracking (optional)
+# wandb>=0.15.0
+# tensorboard>=2.14.0

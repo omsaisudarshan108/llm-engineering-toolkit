@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "daily-tools": {
+      "command": "uv",
+      "args": ["run", "--directory", "${PROJECT_DIR}", "daily-tools"],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,17 @@
+# Inference server dependencies
+# Install: pip install -r requirements.txt
+
+# Model serving
+torch==2.2.2
+torchvision==0.17.2
+transformers==4.44.2
+peft==0.12.0
+bitsandbytes==0.42.0   # CUDA only — skip on macOS, required for 4-bit QLoRA on GPU
+accelerate==0.33.0
+sentencepiece==0.2.0
+protobuf==4.25.4
+
+# Web server
+fastapi==0.112.2
+uvicorn[standard]==0.30.6
+pydantic==2.8.2

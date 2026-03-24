@@ -1,0 +1,41 @@
+# CPU-only Fly deployment for the Insurance SLM server.
+# Uses the same public app hostname, but avoids GPU billing approval.
+
+app = 'insurance-slm'
+primary_region = 'iad'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[env]
+  BASE_MODEL_ID   = 'microsoft/Phi-3.5-mini-instruct'
+  ADAPTER_PATH    = '/app/models/insurance-phi35-lora'
+  MODEL_CACHE_DIR = '/tmp/models-cache'
+  USE_4BIT        = 'false'
+  MERGE_ON_LOAD   = 'false'
+  PORT            = '8080'
+
+[http_service]
+  internal_port        = 8080
+  force_https          = true
+  auto_stop_machines   = 'stop'
+  auto_start_machines  = true
+  min_machines_running = 0
+  processes            = ['app']
+
+  [http_service.concurrency]
+    type       = 'requests'
+    soft_limit = 2
+    hard_limit = 4
+
+  [[http_service.checks]]
+    grace_period = '60s'
+    interval     = '30s'
+    method       = 'GET'
+    path         = '/health'
+    timeout      = '10s'
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus     = 4
+  memory   = '8gb'

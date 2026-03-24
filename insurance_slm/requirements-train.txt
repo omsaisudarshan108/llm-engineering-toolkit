@@ -1,0 +1,8 @@
+# Training dependencies (superset of requirements.txt)
+# Install: pip install -r requirements-train.txt
+
+-r requirements.txt
+
+# Fine-tuning
+trl==0.9.6
+datasets==2.21.0

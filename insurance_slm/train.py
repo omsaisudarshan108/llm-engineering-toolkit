@@ -33,7 +33,7 @@ import sys
 
 import torch
 from datasets import load_dataset
-from peft import LoraConfig, TaskType, get_peft_model
+from peft import LoraConfig, TaskType, get_peft_model, prepare_model_for_kbit_training
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from trl import SFTConfig, SFTTrainer
 
@@ -147,6 +147,9 @@ def train(args):
 
     # 4. Apply LoRA adapters
     print(f"[3/6] Applying LoRA adapters  (r={args.lora_r}, alpha={args.lora_alpha})")
+    if USE_4BIT:
+        model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=False)
+    model.enable_input_require_grads()
     model = get_peft_model(model, lora_config(args.lora_r, args.lora_alpha, args.lora_dropout))
     model.print_trainable_parameters()
 
@@ -160,7 +163,7 @@ def train(args):
         num_train_epochs=args.num_epochs,
         per_device_train_batch_size=args.batch_size,
         gradient_accumulation_steps=args.grad_accum,
-        gradient_checkpointing=(DEVICE == "cuda"),  # not supported on MPS
+        gradient_checkpointing=False,
         optim="paged_adamw_32bit" if USE_4BIT else "adamw_torch",
         learning_rate=args.learning_rate,
         lr_scheduler_type="cosine",
